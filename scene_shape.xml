@@ -1,0 +1,89 @@
+<mujoco model="ffw_bg2 shape scene">
+
+  <!--AI worker -->
+  <include file="ffw_bg2.xml"/>
+
+  <statistic center="0.3 0 0.4" extent="1"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6"
+               ambient="0.3 0.3 0.3"
+               specular="0 0 0"/>
+
+    <rgba haze="0.15 0.25 0.35 1"/>
+
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <asset>
+
+    <!-- backgnd -->
+    <texture type="skybox"
+             builtin="gradient"
+             rgb1="0.3 0.5 0.7"
+             rgb2="0 0 0"
+             width="512"
+             height="3072"/>
+
+    <!-- 바닥 텍스처 -->
+    <texture type="2d"
+             name="groundplane"
+             builtin="checker"
+             mark="edge"
+             rgb1="0.2 0.3 0.4"
+             rgb2="0.1 0.2 0.3"
+             markrgb="0.8 0.8 0.8"
+             width="300"
+             height="300"/>
+
+    <material name="groundplane"
+              texture="groundplane"
+              texuniform="true"
+              texrepeat="5 5"
+              reflectance="0.2"/>
+
+    <!-- table -->
+    <mesh name="shape_table_mesh"
+          file="C:\Users\user\Worker_sim\mujoco_sim\table_2.STL"
+          scale="0.1 0.1 0.1"/>
+
+  </asset>
+
+  <worldbody>
+
+    <!-- 조명 -->
+    <light pos="0 0 1.5"
+           dir="0 0 -1"
+           directional="true"/>
+
+    <!-- 바닥 -->
+    <geom name="floor"
+          size="0 0 0.05"
+          type="plane"
+          material="groundplane"/>
+
+    <!--
+      테이블
+      pos: STL 원점의 월드 좌표, X Y Z 순서, 단위 m.
+      quat: w x y z 순서. 현재는 X축 +90도 회전.
+      joint가 없으므로 월드에 고정됨.
+    -->
+    <body name="shape_table"
+          pos="0.8 -1.0 0"
+          quat="0.7071068  0 -0.7071068  0">
+
+      <geom name="shape_table_geom"
+            type="mesh"
+            mesh="shape_table_mesh"
+            rgba="0.65 0.48 0.30 1"
+            contype="1"
+            conaffinity="1"
+            friction="0.8 0.005 0.0001"/>
+
+    </body>
+
+    <!-- cube는 이후 추가 -->
+
+  </worldbody>
+
+</mujoco>
